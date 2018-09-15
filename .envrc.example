@@ -1,0 +1,2 @@
+export env_var=env_var_value
+export env_var2=env_var_value2

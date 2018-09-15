@@ -1,5 +1,5 @@
-import { devlog } from "./utils/log"
-const popsicle = require("popsicle")
+import { devlog } from './utils/log'
+const axios = require('axios')
 
 export default class Api {
   constructor(baseUrl) {
@@ -9,16 +9,22 @@ export default class Api {
   request = async request => {
     try {
       const response = await request
-      return JSON.parse(response.body)
+      return { ...response.data, status: response.status }
     } catch (err) {
-      devlog("ERROR API", err)
+      devlog('ERROR API', err)
       return err
     }
   }
 
-  url = url => `${this.baseUrl}${url}`
+  url = endpoint => `${this.baseUrl}${endpoint}`
 
-  GET = async url => this.request(popsicle.get(this.url(url)))
+  GET = async endpoint => this.request(axios.get(this.url(endpoint)))
 
-  POST = async (url, body) => this.request(popsicle.post(this.url(url), body))
+  POST = async (endpoint, body) =>
+    this.request(axios.post(this.url(endpoint), body))
+
+  login = async userData => {
+    const response = await this.POST('/login', userData)
+    return Promise.resolve(response)
+  }
 }

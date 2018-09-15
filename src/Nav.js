@@ -1,14 +1,17 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { Route as RouteDom, Link, Switch, withRouter } from "react-router-dom"
-import { Helmet } from "react-helmet"
-import styled from "styled-components"
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Route as RouteDom, Link, Switch, withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import styled from 'styled-components'
 
-import Home from "./screens/Home"
-import NotFound from "./screens/NotFound"
+import Home from './screens/Home'
+import SignUp from './screens/SignUp'
+import Profile from './screens/Profile'
+import Other from './screens/Other'
+import NotFound from './screens/NotFound'
 
-const siteTitle = title => (title ? `RT | ${title}` : "React Template")
+const siteTitle = title => (title ? `${title}` : 'App Name - Inicio')
 
 const App = styled.div`
   width: 100%;
@@ -41,7 +44,7 @@ const NavRight = styled(NavSection)``
 
 const NavHref = styled(Link)`
   padding: 0 12px;
-  color: ${props => (props.className === "active" ? "#00bfff" : "white")};
+  color: ${props => (props.className === 'active' ? '#00bfff' : 'white')};
   text-decoration: none;
   font-weight: lighter;
   cursor: pointer;
@@ -54,7 +57,7 @@ const NavLink = ({ to, label, exact, ignore = false }) => (
   <RouteDom path={to} exact={exact}>
     {({ match }) => {
       return (
-        <NavHref to={to} className={!ignore && match ? "active" : ""}>
+        <NavHref to={to} className={!ignore && match ? 'active' : ''}>
           {label}
         </NavHref>
       )
@@ -90,51 +93,53 @@ Route.propTypes = {
   title: PropTypes.string,
 }
 
-const Footer = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 40px;
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-  align-items: center;
-  background-color: lightGray;
-`
+// const Footer = styled.div`
+//   position: fixed;
+//   bottom: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 40px;
+//   display: flex;
+//   flex-flow: row;
+//   justify-content: space-between;
+//   align-items: center;
+//   background-color: lightGray;
+// `
+//
+// const FooterSection = styled.div`
+//   display: flex;
+//   flex-flow: row;
+// `
+//
+// const FooterLeft = styled(FooterSection)``
+//
+// const FooterRight = styled(FooterSection)``
+//
+// const FooterHref = styled.a`
+//   padding: 0 12px;
+//   color: ${props => (props.active ? 'blueviolet' : 'black')};
+//   text-decoration: none;
+//   font-weight: lighter;
+//   cursor: pointer;
+//   :hover {
+//     color: blueviolet;
+//   }
+// `
+//
+// const FooterLink = ({ to, label }) => (
+//   <FooterHref href={to} target={'_blank'}>
+//     {label}
+//   </FooterHref>
+// )
+//
+// FooterLink.propTypes = {
+//   to: PropTypes.string.isRequired,
+//   label: PropTypes.string.isRequired,
+// }
 
-const FooterSection = styled.div`
-  display: flex;
-  flex-flow: row;
-`
-
-const FooterLeft = styled(FooterSection)``
-
-const FooterRight = styled(FooterSection)``
-
-const FooterHref = styled.a`
-  padding: 0 12px;
-  color: ${props => (props.active ? "blueviolet" : "black")};
-  text-decoration: none;
-  font-weight: lighter;
-  cursor: pointer;
-  :hover {
-    color: blueviolet;
-  }
-`
-
-const FooterLink = ({ to, label }) => (
-  <FooterHref href={to} target={"_blank"}>
-    {label}
-  </FooterHref>
-)
-
-FooterLink.propTypes = {
-  to: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-}
-
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  mail: state.user.mail,
+})
 
 const mapDispatchToProps = {}
 
@@ -144,34 +149,41 @@ class Navigator extends Component {
       <App>
         <Nav>
           <NavLeft>
-            <NavLink to="/" label="React Template" exact ignore />
-            <NavLink to="/other1" label="Other 1" />
-            <NavLink to="/other2" label="Other 2" />
+            <NavLink to="/" label="Inicio" exact ignore />
+            <NavLink to="/other" label="Otra" exact ignore />
           </NavLeft>
           <NavRight>
-            <NavLink to="/go" label="Accesos" />
+            {!this.props.mail && <NavLink to="/signup" label="Registrarse" />}
+            {this.props.mail && <NavLink to="/profile" label="Tu perfil" />}
           </NavRight>
         </Nav>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route component={NotFound} title="Not found" />
+          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/other" component={Other} />
+          <Route exact path="/profile" component={Profile} />
+          <Route component={NotFound} title="No encontrado" />
         </Switch>
-        <Footer>
+        {/* <Footer>
           <FooterLeft>
             <FooterLink to="https://google.com" label="Google" />
           </FooterLeft>
           <FooterRight>
-            <FooterLink
-              to="https://github.com/negebauer/react-template"
-              label="Github"
-            />
+            <FooterLink to="https://github.com/fnmendez" label="Github" />
           </FooterRight>
-        </Footer>
+        </Footer> */}
       </App>
     )
   }
 }
 
+Navigator.propTypes = {
+  mail: PropTypes.string.isRequired,
+}
+
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Navigator)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Navigator)
 )

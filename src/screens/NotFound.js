@@ -1,10 +1,10 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
+import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
-import { LinkPadded } from "../components/Link"
-import { ContainerCenter } from "../components/Container"
-import { goBack } from "../redux/modules/router"
+import { LinkPadded } from '../components/Link'
+import { ContainerCenter } from '../components/Container'
+import { goBack } from '../redux/modules/router'
 
 const mapStateToProps = () => ({})
 
@@ -25,4 +25,7 @@ NotFound.propTypes = {
   goBack: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotFound)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NotFound)

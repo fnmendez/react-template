@@ -1,18 +1,18 @@
-import { compose, createStore, applyMiddleware } from "redux"
-import thunk from "redux-thunk"
-import logger from "redux-logger"
-import promiseMiddleware from "redux-promise-middleware"
-import { autoRehydrate } from "redux-persist"
-import { routerMiddleware } from "react-router-redux"
+import { compose, createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import logger from 'redux-logger'
+import promiseMiddleware from 'redux-promise-middleware'
+import { autoRehydrate } from 'redux-persist'
+import { routerMiddleware } from 'react-router-redux'
 
-import reducers from "./reducers"
+import reducers from './reducers'
 
 export default function configureStore(
   initialState = {},
   history = {},
   { api } = {}
 ) {
-  const shouldLog = process.env.NODE_ENV === "development"
+  const shouldLog = process.env.NODE_ENV === 'development'
 
   // Setup middleware
   const middleware = [
@@ -25,7 +25,9 @@ export default function configureStore(
   }
 
   // Setup middlewares and enhancers
-  const enhancer = compose(
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+  const enhancer = composeEnhancers(
     applyMiddleware(...middleware),
     autoRehydrate({ log: shouldLog })
   )

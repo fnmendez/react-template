@@ -26,7 +26,14 @@ module.exports = {
     "prettier/prettier": ["error", {
       trailingComma: "es5",
       semi: false,
+      singleQuote: true,
     }],
-    semi: [0, 'never']
+    semi: [0, 'never'],
+    "prefer-const": ["error", {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+    }],
+    "no-var": "error",
+    "eqeqeq": ["error", "smart"],
   },
 };
